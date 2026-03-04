@@ -135,15 +135,15 @@ for log in logs:
             "IP de Origem": ip_origem,
             "Resumo do Log": contexto,
             "Tentativas": 1,
-            "Porta": [porta],
+            "Portas": [porta],
             "PIDs": [pid]
         }
     else:
         eventos_agregados[chave_evento]["Tentativas"] += 1
 
         # Adiciona porta apenas se for diferente
-        if porta not in eventos_agregados[chave_evento]["Porta"]:
-            eventos_agregados[chave_evento]["Porta"].append(porta)
+        if porta not in eventos_agregados[chave_evento]["Portas"]:
+            eventos_agregados[chave_evento]["Portas"].append(porta)
 
         # Mesmo critério para PID
         if pid not in eventos_agregados[chave_evento]["PIDs"]:
@@ -161,7 +161,7 @@ for i, (chave, evento) in enumerate(eventos_agregados.items()):
         criticidade(
             usuario,
             ip_origem,
-            evento["Porta"],
+            evento["Portas"][0],  # Porta principal (primeira)
             contexto,
             evento["Tentativas"]
         )

@@ -17,7 +17,7 @@ Feb 24 10:01:39 server01 sshd[1062]: Failed password for invalid user postgres f
 Feb 24 10:01:44 server01 sshd[1064]: Invalid user backup from 103.77.192.44 port 53421
 Feb 24 10:01:50 server01 sshd[1067]: Failed password for joao from 10.0.0.12 port 53421 ssh2
 Feb 24 10:01:57 server01 sshd[1070]: Accepted password for joao from 10.0.0.12 port 53421 ssh2
-Feb 24 10:02:04 server01 sshd[1073]: Received disconnect from 10.0.0.12 port 53421:11: disconnected by user
+Feb 24 10:02:04 server01 sshd[1073]: Received disconnect from 10.0.0.12 port 53421:11: disconnected by user joao
 Feb 24 10:02:10 server01 sshd[1076]: Failed password for root from 91.200.14.88 port 53421 ssh2
 Feb 24 10:02:16 server01 sshd[1079]: Failed password for admin from 91.200.14.88 port 53421 ssh2
 Feb 24 10:02:23 server01 sshd[1082]: Failed password for root from 91.200.14.88 port 53421 ssh2
@@ -33,7 +33,7 @@ Feb 24 10:03:29 server01 sshd[1109]: Failed password for invalid user guest from
 Feb 24 10:03:37 server01 sshd[1112]: Accepted password for ana from 172.16.1.15 port 53421 ssh2
 Feb 24 10:03:44 server01 sshd[1115]: Failed password for lucas from 189.77.12.5 port 53421 ssh2
 Feb 24 10:03:52 server01 sshd[1118]: Accepted password for lucas from 189.77.12.5 port 53421 ssh2
-Feb 24 10:04:00 server01 sshd[1121]: Received disconnect from 189.77.12.5 port 53421:11: disconnected by user
+Feb 24 10:04:00 server01 sshd[1121]: Received disconnect from 189.77.12.5 port 53421:11: disconnected by user lucas
 Feb 24 10:04:09 server01 sshd[1124]: Failed password for root from 37.49.225.33 port 53421 ssh2
 Feb 24 10:04:17 server01 sshd[1127]: Failed password for root from 37.49.225.33 port 53421 ssh2
 Feb 24 10:04:24 server01 sshd[1130]: Failed password for root from 37.49.225.33 port 53421 ssh2
