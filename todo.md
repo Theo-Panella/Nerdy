@@ -9,11 +9,11 @@
 - [ ] Pesquisar como fazer para leitura em tempo real de logs - 04/03/2026 theo 
 
 
-### In Progress
+## In Progress
 
 - [ ]   
 
-### Done ✓
+## Done ✓
 
 - [x] Mapa mental de estrutura do projeto - 20/02/26 Theo
 - [x] Usar RegEx como metodo inicial de busca  - 22/02/26 Theo
