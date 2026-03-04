@@ -1,0 +1,17 @@
+
+### To do
+- [ ] Implementação de Elastic Search #feat @john 2020-03-20  
+
+### In Progress
+
+- [ ]   
+
+### Done ✓
+
+- [x] Mapa mental de estrutura do projeto - 20/02/26 Theo
+- [x] Usar RegEx como metodo inicial de busca  - 22/02/26 Theo
+- [x] Biblioteca pyyaml para criar arquivo de parsing - 23/02/26 Theo
+- [x] Definir função de cada metodo de analise - 23/02/26 Theo
+- [x] Criar Metodo de criticidade com score = pesos por contexto + evento - 27/02/26 Theo
+- [x] Implementação de eventos_agregados, todo evento com Usuario, Contexto, Ip de origem e Servidor iguais são juntos em um unico evento 01/03/26 Theo
+- [x] 
