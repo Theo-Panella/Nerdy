@@ -17,7 +17,6 @@
 ## P3 
 - [ ] Pesquisar como fazer para leitura em tempo real de logs - 04/03/2026 theo 
 
-
 ## In Progress
 
 
