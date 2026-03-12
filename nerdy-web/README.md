@@ -16,3 +16,8 @@ Funcionalidades:
 - API para atualização de logs
 
 Projeto acadêmico desenvolvido para análise de segurança e integração futura com sistema de IA para classificação de criticidade.
+
+# Passo a Passo
+
+- pip install -r requirements.txt
+- gunicorn -w 4 -b 127.0.0.1:8000 app:app
