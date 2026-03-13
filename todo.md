@@ -7,17 +7,18 @@
 - [x] Criar Metodo de criticidade com score = pesos por contexto + evento (**Risk-Based Scoring ou pontuação ponderada**)- 27/02/26 Theo
 - [x] Implementação de eventos_agregados, todo evento iguais em alguns parametros são agregados em um unico evento - 01/03/26 Theo
 - [x] Aplicar os re.compile do restante dos metodos de analise (pid, porta e servidor) - 04/03/2026 theo 
+- [x] Subir servidor nginx - 04/03/2026 theo
+- [x] Pesquisar como fazer para leitura em tempo real de logs - 04/03/2026 theo 
 
 ## P1 
-- [ ] Subir servidor ssh e pegar logs reais para testes - 04/03/2026 theo
 - [ ] Implementação de Elastic Search, para indexação dos dados - 04/03/2026 theo
+- [ ] Pegar logs reais para testes do servidor novo - 13/03/2026 theo
 
 ## P2 
 - [ ] Pesquisar a criação de um code em Rust como serviço (agent) - 06/03/2026 theo
 - [ ] Rever Conceito de Score (Score por Risco de Evento, Score por Contexto, Peso por Contexto de Evento Sla) 06/03/2026 theo
 
 ## P3 
-- [ ] Pesquisar como fazer para leitura em tempo real de logs - 04/03/2026 theo 
 
 ## In Progress
 
