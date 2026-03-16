@@ -24,9 +24,8 @@ A branch `homologacao` representa a transição ativa: saindo do escopo exclusiv
 
 ```mermaid
 flowchart TD
-    A1[SSH Log] --> B
-    A2[Nginx Log] --> B
-    A3[Web App Log] --> B
+    A1[Nginx Log] --> B
+    A2[Web App Log] --> B
     B[Agente Mini Mim] --> C
     C[Parser Regex] --> D
     D[Normalizacao YAML] --> E
