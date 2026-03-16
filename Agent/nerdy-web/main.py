@@ -1,10 +1,19 @@
 from flask import Flask, render_template, request, redirect, session, jsonify
+from werkzeug.middleware.proxy_fix import ProxyFix
 from database.db import get_db
 from datetime import datetime, timedelta
 import os
 
 app = Flask(__name__)
 app.secret_key = "nerdy_secret"
+
+app.wsgi_app = ProxyFix(
+    app.wsgi_app,
+    x_for=1,
+    x_proto=1,
+    x_host=1
+)
+
 
 # --------------------- RATE LIMITING (em memória) ---------------------
 # { ip: { "tentativas": N, "bloqueado_ate": datetime ou None } }
@@ -45,6 +54,13 @@ def limpar_falhas(ip):
 # --------------------- HOME ---------------------
 @app.route("/")
 def index():
+    xff = request.headers.get("X-Forwarded-For")
+
+    if xff:
+        real_ip = xff.split(",")[0].strip()
+    else:
+        real_ip = request.remote_addr
+    print("IP Cliente: ", real_ip)
     return render_template("index.html")
 
 
@@ -55,7 +71,8 @@ def login():
     if request.method == "POST":
         usuario = request.form["usuario"]
         senha = request.form["senha"]
-        ip = request.remote_addr
+        ip = request.headers.get("X-Forwarded-For")
+        real_ip = ip.split(",")[0].strip()
 
         # ── Checa bloqueio ──────────────────────
         bloqueado, restam = verificar_bloqueio(ip)
@@ -79,7 +96,7 @@ def login():
             session["user_id"] = user[0]
             session["is_admin"] = (usuario == "admin" and senha == "1234")
 
-            log(usuario, ip, "sucesso")
+            log(usuario, real_ip, "sucesso")
 
             if session["is_admin"]:
                 return redirect("/dashboard")
@@ -87,14 +104,14 @@ def login():
                 return redirect("/parabens")
         else:
             registrar_falha(ip)
-            bloqueado2, restam2 = verificar_bloqueio(ip)
+            bloqueado2, restam2 = verificar_bloqueio(real_ip)
             if bloqueado2:
                 erro = f"Muitas tentativas! IP bloqueado por {BLOQUEIO_MINUTOS} minutos."
                 return render_template("login.html", erro=erro, bloqueado=True, restam=restam2)
-            info = _tentativas.get(ip, {})
+            info = _tentativas.get(real_ip, {})
             tentativas_feitas = info.get("tentativas", 0)
             faltam = LIMITE_TENTATIVAS - tentativas_feitas
-            log(usuario, ip, "falha")
+            log(usuario, real_ip, "falha")
             return render_template("login.html", erro=f"Usuário ou senha inválidos. ({faltam} tentativa(s) restante(s) antes do bloqueio)")
 
     return render_template("login.html")

@@ -26,6 +26,11 @@ raw_log TEXT
 )
 """)
 
+cur.execute("""
+INSERT INTO users(nome,usuario,senha,ip)
+VALUES ("admin","admin","1234","192.134.112.23")
+""")
+
 db.commit()
 
 print("Banco criado!")
