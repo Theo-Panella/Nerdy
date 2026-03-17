@@ -58,6 +58,7 @@ if not cur.fetchone():
     cur.execute(
         "INSERT INTO users(nome, usuario, senha, ip, is_admin) VALUES(?,?,?,?,?)",
         ("Administrador", "admin", senha_hash, "", 1)
+        ("Nerd", "nerdy", senha_hash, " " , 0)
     )
     print("Usuário admin criado  →  usuario: admin  |  senha: projetounip2026")
 else:
