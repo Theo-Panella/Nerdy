@@ -5,14 +5,14 @@ file.yaml
 venv
 
 # python cache
-nerdy_web/analytics_dashboard/__pycache__/
+nerdy_web/Dashboard/__pycache__/
 nerdy_web/client_app/__pycache__/
 Analise/__pycache__/
 *.pyc
 
 # banco de dados
 nerdy_web/*.db
-nerdy_web/analytics_dashboard/database/*.db
+nerdy_web/Dashboard/*.db
 nerdy_web/client_app/database/*.db
 nerdy.db
 
