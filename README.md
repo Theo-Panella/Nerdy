@@ -94,7 +94,7 @@ pip install -r requirements.txt
 ### 1. Clone a branch de homologação
 
 ```bash
-git clone -b homologacao https://github.com/Theo-Panella/Nerdy.git
+git clone -b dev https://github.com/Theo-Panella/Nerdy.git
 cd Nerdy
 ```
 
