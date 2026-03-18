@@ -20,7 +20,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           key_format: base64
           source: "."
-          target: /documents
+          target: ~/Nerdy
       
       - name: "Inicia Aplicacao"
         uses: appleboy/ssh-action@v1
@@ -33,7 +33,7 @@ jobs:
           script: |
             apk add --no-cache py3-pip  # py3-pip, não só "pip"
       
-            cd /documents/Nerdy
+            cd Nerdy
             python3 -m venv venv
             source venv/bin/activate
             pip install -r requirements.txt
