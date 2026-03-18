@@ -29,6 +29,7 @@ jobs:
           username: "root"
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           key_format: base64
+          source: "."
           script: |
             apk add --no-cache py3-pip  # py3-pip, não só "pip"
       
