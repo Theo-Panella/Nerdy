@@ -11,9 +11,8 @@ from watchdog.observers import Observer
 #====================================================================================
 # Variaveis Globais
 lista_de_servico = ['Flask']
-caminho_de_configuracao = "nerdy_web/MiniMim/config.yaml"
-caminho_de_log = '.\\flask_logs.txt'
-quantidade_de_ultimas_linhas = 1
+caminho_de_configuracao = "MiniMim/config.yaml"
+caminho_de_log = '.\\MiniMim\\flask_logs.txt'
 #====================================================================================
 
 
@@ -67,8 +66,7 @@ def flask_pre_filter(ultimas_linhas,regras):
 # Classe evento do Watchdog
 class MyEventHandler(FileSystemEventHandler):
     def __init__(self):
-        self._pos = 0          # estado inicial
-        self._id = 0
+        self._pos = 0          # Posicao inicial (Na primeira vez rodando faz ingestão inicial e depois continua apartir da ultima)
 
     def on_any_event(self, event: FileSystemEvent) -> None:
         if event.src_path == caminho_de_log and event.event_type == "modified":
@@ -85,7 +83,6 @@ class MyEventHandler(FileSystemEventHandler):
 
 #====================================================================================
 #Chama evento e mantem em loop
-
 if __name__ == "__main__":
     event_handler = MyEventHandler()
     observer = Observer()

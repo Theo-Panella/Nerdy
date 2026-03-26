@@ -9,6 +9,6 @@ Nginx:
     Failure: 'nerdy-web flask\[\d+\]: Failed password for .'
     Accepted: 'nerdy-web flask\[\d+\]: Accepted password for'
     
-rabeta: 
+Estreber: 
     Failure: 'nerdy-web flask\[\d+\]: Failed password for .'
     Accepted: 'nerdy-web flask\[\d+\]: Accepted password for'
