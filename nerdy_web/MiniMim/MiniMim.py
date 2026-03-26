@@ -12,34 +12,55 @@ from watchdog.observers import Observer
 # Variaveis Globais
 lista_de_servico = ['Flask']
 caminho_de_configuracao = "nerdy_web/MiniMim/config.yaml"
-caminho_de_log = './flask_logs.txt'
-quantidade_de_ultimas_linhas = 3
+caminho_de_log = '.\\flask_logs.txt'
+quantidade_de_ultimas_linhas = 1
 fila_de_linhas = []
+id = 0
 #====================================================================================
 
 
 #====================================================================================
-# Abre o arquivo de Configuracao e compila, para melhor desempenho
-#
-# Ver como escalacionar o processo de compilacao (multiplas variacoes de configuracoes)
-
+# Abre o arquivo de Configuracao e compila para melhor desempenho
+# Abre regras individualmente, tem mais processamento na primeira rodagem por compilar
+# todas as configurações inicialmente
 with open(caminho_de_configuracao, 'r') as arquivo_de_configuracao_puro:
     configuracao = yaml.safe_load(arquivo_de_configuracao_puro)
-    Failure = re.compile(configuracao['Flask']['Failure'])
-    Accepted = re.compile(configuracao['Flask']['Accepted'])
+
+regras = {
+    servico: {
+        tipo: re.compile(padrao)
+        for tipo, padrao in padroes.items()
+    }
+    for servico, padroes in configuracao.items()
+}
 #====================================================================================
 
 
 #====================================================================================
 # Funcao de pre_Filtro do Flask
-def flask_pre_filter(ultimas_linhas,Failure,Accepted):
-    print(Failure)
-    print(Accepted)
+def flask_pre_filter(ultimas_linhas,regras):
+    # Pega cada linha da ultima linha lida, default = 1
     for cada_linha in ultimas_linhas:
-        print(cada_linha.strip())
-        if re.search(Failure, cada_linha.strip()) or re.findall(Accepted, cada_linha.strip()):
-            print('Log de Acesso encontrado')
+        ''' Pega cada serviço e seu padrao. 
+        EX: Servico: 
+                PadraoA: "Valor"
+                PadraoB: "Valor"
+                ...
+        '''
+        for servico, padrao in regras.items():
+            ''' Pega cada padrao (nome_padrao) e seu compile (str_padrao). 
+                EX:
+                        (PadraoA) nome_padrao: "str_padrao"
+                        (PadraoB) nome_padrao: "str_padrao"
+                        ...
+                '''
+            for nome_padrao,str_padrao  in padrao.items():
+                # Verifica se atende os padrões daquele servico
+                if re.search(regras[servico][nome_padrao], cada_linha.strip()):
+                    print(f'Log do servico {servico} encontrado, aplicando pre-filtro do {servico}: {nome_padrao}')
+                    #print(f'Log de Acordo com a configuração encontrado ')
 
+# Todo o PRE-FILTRO, precisa de uma função com essa mesma logica, 
 #====================================================================================
 
 
@@ -47,12 +68,13 @@ def flask_pre_filter(ultimas_linhas,Failure,Accepted):
 # Classe evento do Watchdog
 class MyEventHandler(FileSystemEventHandler):
     def on_any_event(self, event: FileSystemEvent) -> None:
-        if event.src_path == "./flask_logs.txt" and event.event_type == "modified":
+        if event.src_path == caminho_de_log and event.event_type == "modified":
             print("Nova tentativa de Login detectada")
             print("Analisando log...")
             with open(caminho_de_log, "r", encoding="utf-8") as f:
                 ultimas_linhas = deque(f, maxlen=quantidade_de_ultimas_linhas)
-                flask_pre_filter(ultimas_linhas,Failure,Accepted)
+                id = 0
+                flask_pre_filter(ultimas_linhas,regras)
 #====================================================================================
 
 
