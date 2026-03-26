@@ -2,5 +2,5 @@
 # Melhora consideravel em customização de filtragem inicial para cada caso
 
 Flask: 
-    Failure: ".* nerdy-web flask[.*]: Failed password for .*"
-    Accepted: ".* nerdy-web flask[.*]: Accepted password for .*"
+    Failure: 'nerdy-web flask\[\d+\]: Failed password for .'
+    Accepted: 'nerdy-web flask\[\d+\]: Accepted password for .*'
