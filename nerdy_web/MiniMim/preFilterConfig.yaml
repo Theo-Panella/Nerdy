@@ -1,9 +1,0 @@
-Flask:
-  - Access: 
-      Failure: "Mar 20 13:48:37 nerdy-web flask[4712]: Failed password for"
-      Accepted: "Mar 20 13:48:37 nerdy-web flask[4712]: Accepted password for"
-      Invalid: ""
-
-# Adicionar os logs do Nginx e outros quando estiver mais acertivo o projeto
-
-  

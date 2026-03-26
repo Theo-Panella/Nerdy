@@ -14,8 +14,6 @@ lista_de_servico = ['Flask']
 caminho_de_configuracao = "nerdy_web/MiniMim/config.yaml"
 caminho_de_log = '.\\flask_logs.txt'
 quantidade_de_ultimas_linhas = 1
-fila_de_linhas = []
-id = 0
 #====================================================================================
 
 
@@ -48,18 +46,19 @@ def flask_pre_filter(ultimas_linhas,regras):
                 ...
         '''
         for servico, padrao in regras.items():
+            if servico not in lista_de_servico:
+                continue
             ''' Pega cada padrao (nome_padrao) e seu compile (str_padrao). 
                 EX:
                         (PadraoA) nome_padrao: "str_padrao"
                         (PadraoB) nome_padrao: "str_padrao"
                         ...
                 '''
-            for nome_padrao,str_padrao  in padrao.items():
+            for nome_padrao, padrao_compilado  in padrao.items():
                 # Verifica se atende os padrões daquele servico
-                if re.search(regras[servico][nome_padrao], cada_linha.strip()):
+                if padrao_compilado.search(cada_linha.strip()):
                     print(f'Log do servico {servico} encontrado, aplicando pre-filtro do {servico}: {nome_padrao}')
                     #print(f'Log de Acordo com a configuração encontrado ')
-
 # Todo o PRE-FILTRO, precisa de uma função com essa mesma logica, 
 #====================================================================================
 
@@ -67,27 +66,35 @@ def flask_pre_filter(ultimas_linhas,regras):
 #====================================================================================
 # Classe evento do Watchdog
 class MyEventHandler(FileSystemEventHandler):
+    def __init__(self):
+        self._pos = 0          # estado inicial
+        self._id = 0
+
     def on_any_event(self, event: FileSystemEvent) -> None:
         if event.src_path == caminho_de_log and event.event_type == "modified":
             print("Nova tentativa de Login detectada")
             print("Analisando log...")
             with open(caminho_de_log, "r", encoding="utf-8") as f:
-                ultimas_linhas = deque(f, maxlen=quantidade_de_ultimas_linhas)
-                id = 0
-                flask_pre_filter(ultimas_linhas,regras)
+                #ultimas_linhas = deque(f, maxlen=quantidade_de_ultimas_linhas)
+                f.seek(self._pos)
+                novas_linhas = f.readlines()
+                self._pos = f.tell()
+                flask_pre_filter(novas_linhas,regras)
 #====================================================================================
 
 
 #====================================================================================
 #Chama evento e mantem em loop
-event_handler = MyEventHandler()
-observer = Observer()
-observer.schedule(event_handler, ".", recursive=True)
-observer.start()
-try:    
-    while True:
-        time.sleep(2)
-finally:
-    observer.stop()
-    observer.join()
+
+if __name__ == "__main__":
+    event_handler = MyEventHandler()
+    observer = Observer()
+    observer.schedule(event_handler, ".", recursive=True)
+    observer.start()
+    try:    
+        while True:
+            time.sleep(2)
+    finally:
+        observer.stop()
+        observer.join()
 #====================================================================================

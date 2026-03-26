@@ -4,3 +4,11 @@
 Flask: 
     Failure: 'nerdy-web flask\[\d+\]: Failed password for .'
     Accepted: 'nerdy-web flask\[\d+\]: Accepted password for .*'
+
+Nginx: 
+    Failure: 'nerdy-web flask\[\d+\]: Failed password for .'
+    Accepted: 'nerdy-web flask\[\d+\]: Accepted password for'
+    
+rabeta: 
+    Failure: 'nerdy-web flask\[\d+\]: Failed password for .'
+    Accepted: 'nerdy-web flask\[\d+\]: Accepted password for'
