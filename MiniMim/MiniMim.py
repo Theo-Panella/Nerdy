@@ -56,10 +56,31 @@ def flask_pre_filter(ultimas_linhas,regras):
             for nome_padrao, padrao_compilado  in padrao.items():
                 # Verifica se atende os padrões daquele servico
                 if padrao_compilado.search(cada_linha.strip()):
+                    envio_para_API(cada_linha.strip())
                     print(f'Log do servico {servico} encontrado, aplicando pre-filtro do {servico}: {nome_padrao}')
                     #print(f'Log de Acordo com a configuração encontrado ')
 # Todo o PRE-FILTRO, precisa de uma função com essa mesma logica, 
 #====================================================================================
+
+#====================================================================================
+# Envio do log para API
+def envio_para_API(log):
+    # Aqui você pode implementar a lógica para enviar o log para a API
+    # Por exemplo, usando a biblioteca requests para fazer uma requisição POST
+    import requests
+
+    url = "http://sua-api-endpoint.com/logs"  # Substitua pelo endpoint da sua API
+    headers = {"Content-Type": "application/json"}
+    data = {"log": log}  # Você pode ajustar os dados conforme necessário
+
+    try:
+        response = requests.post(url, json=data, headers=headers)
+        if response.status_code == 200:
+            print("Log enviado para servidor de analise")
+        else:
+            print(f"Falha ao enviar log. Status code: {response.status_code}")
+    except Exception as e:
+        print(f"Erro ao enviar log: {e}")
 
 
 #====================================================================================
