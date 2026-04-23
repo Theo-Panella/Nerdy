@@ -214,7 +214,7 @@ Exportar para YAML estruturado antes de qualquer análise complexa cria uma cama
 
 ---
 
-*Desenvolvido por [Theo Panella](https://github.com/Theo-Panella) e [Paulo Rogério](https://github.com/) · Limeira, São Paulo*
+*Desenvolvido por [Theo Panella](https://github.com/Theo-Panella) e [Paulo Rogério](https://github.com/paulorogeriovf) · Limeira, São Paulo*
 
 
 
