@@ -9,9 +9,10 @@
 - [x] Aplicar os re.compile do restante dos metodos de analise (pid, porta e servidor) - 04/03/2026 theo 
 - [x] Subir servidor nginx - 04/03/2026 theo
 - [x] Pesquisar como fazer para leitura em tempo real de logs - 04/03/2026 theo 
+- [x] Pegar logs reais para testes do servidor novo - 13/03/2026 theo
 
 ## P1 
-- [ ] Pegar logs reais para testes do servidor novo - 13/03/2026 theo
+- [ ] Criar API como serviço interno do mesmo servidor WEB (Tentar containerizar com Docker) - 23/04/2026 theo
 
 ## P2 
 - [ ] Implementação de Elastic Search, para indexação dos dados - 04/03/2026 theo
