@@ -41,5 +41,5 @@ jobs:
             python3 nerdy_web/Aplicacao_WEB/database/init_db.py
             
             # Roda em background e mantém mesmo após SSH fechar
-            nohup python3 nerdy_web/MiniMim/MiniMim.py > /var/log/minimim.log 2>&1 &
+            nohup python3 MiniMim/MiniMim.py > /var/log/minimim.log 2>&1 &
             nohup python3 nerdy_web/Aplicacao_WEB/main.py > /var/log/nerdy.log 2>&1 &
