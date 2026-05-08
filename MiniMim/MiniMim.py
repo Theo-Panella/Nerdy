@@ -12,7 +12,7 @@ from watchdog.observers import Observer
 # Variaveis Globais
 lista_de_servico = ['Flask']
 caminho_de_configuracao = "MiniMim/config.yaml"
-caminho_de_log = '.\\MiniMim\\flask_logs.txt'
+caminho_de_log = './MiniMim/flask_logs.txt'
 #====================================================================================
 
 
@@ -56,8 +56,11 @@ def flask_pre_filter(ultimas_linhas,regras):
             for nome_padrao, padrao_compilado  in padrao.items():
                 # Verifica se atende os padrões daquele servico
                 if padrao_compilado.search(cada_linha.strip()):
-                    envio_para_API(cada_linha.strip())
-                    print(f'Log do servico {servico} encontrado, aplicando pre-filtro do {servico}: {nome_padrao}')
+                    #envio_para_API(cada_linha.strip())
+                    print(f'Log do servico {servico} e Tipo {nome_padrao} encontrado, aplicando pre-filtro do {servico}: {nome_padrao}')
+                    with open("MiniMim/minimim.txt", "a") as file:
+                        file.write(cada_linha.strip() + "\n")
+
                     #print(f'Log de Acordo com a configuração encontrado ')
 # Todo o PRE-FILTRO, precisa de uma função com essa mesma logica, 
 #====================================================================================
