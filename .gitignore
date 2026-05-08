@@ -1,6 +1,6 @@
 # Arquivo padronizado
 file.yaml
-flask_logs.txt
+*.txt
 # enviroment
 venv
 
