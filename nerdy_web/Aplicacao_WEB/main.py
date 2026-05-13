@@ -4,8 +4,10 @@ from datetime import datetime, timedelta
 import os
 import bcrypt
 import requests as http_requests
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
 app.secret_key = os.environ.get("SECRET_KEY", "nerdy_secret_change_in_production")
 
 # ─── URL da API de analytics (serviço do parceiro) ───────────────────────────
@@ -83,7 +85,8 @@ def login():
     if request.method == "POST":
         usuario = request.form["usuario"]
         senha   = request.form["senha"]
-        ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+        ip = request.remote_addr
+        print("BOOAAAAAAAAAAA", ip)
 
         # Checa bloqueio
         bloqueado, restam = verificar_bloqueio(ip)
@@ -105,7 +108,7 @@ def login():
             session["user_id"]  = user[0]
             session["is_admin"] = bool(user[5])   # coluna is_admin
 
-            registrar_log(usuario, ip.split(",")[1], "sucesso")
+            registrar_log(usuario, ip, "sucesso")
 
             return redirect("/painel" if session["is_admin"] else "/parabens")
 
