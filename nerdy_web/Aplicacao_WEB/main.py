@@ -85,7 +85,7 @@ def login():
     if request.method == "POST":
         usuario = request.form["usuario"]
         senha   = request.form["senha"]
-        ip = request.remote_addr 
+        ip = request.headers.get('CF-Connecting-IP')
         
 
         # Checa bloqueio
