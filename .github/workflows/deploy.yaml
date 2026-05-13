@@ -33,6 +33,10 @@ jobs:
           script: |
             apk add --no-cache py3-pip  # py3-pip, não só "pip"
       
+            # Mata processos antigos (se existirem)
+            pkill -f "python3 MiniMim/MiniMim.py" || true
+            pkill -f "python3 nerdy_web/Aplicacao_WEB/main.py" || true
+
             cd Nerdy
             python3 -m venv venv
             source venv/bin/activate
