@@ -9,9 +9,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Baixa o codigo"
-        uses: actions/checkout@v4
-        
+      - name: "Checkout do código"
+        uses: actions/checkout@v3
+
       - name: "Copia arquivos via SSH"
         uses: appleboy/scp-action@v1
         with:
@@ -20,8 +20,32 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           key_format: base64
           source: "."
-          target: Nerdy
+          target: ~/Nerdy
       
+      - name: "Verificando e matando processos antigos"
+        uses: appleboy/ssh-action@v1
+        timeout-minutes: 5
+        with:
+          host: ${{ secrets.IP_SERVER_NERDY }}
+          username: "root"
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key_format: base64
+          source: "."
+          script: |
+            if pgrep -f "python3 MiniMim/MiniMim.py" > /dev/null; then
+                echo "Matando processo antigo do MiniMim..."
+                pkill -f "python3 MiniMim/MiniMim.py"
+            else
+                echo "Nenhum processo antigo do MiniMim encontrado."
+            fi
+
+            if pgrep -f "python3 nerdy_web/Aplicacao_WEB/main.py" > /dev/null; then
+                echo "Matando processo antigo da Aplicação WEB..."
+                pkill -f "python3 nerdy_web/Aplicacao_WEB/main.py"
+            else
+                echo "Nenhum processo antigo da Aplicação WEB encontrado."
+            fi
+
       - name: "Configuração"
         uses: appleboy/ssh-action@v1
         timeout-minutes: 5
@@ -34,12 +58,12 @@ jobs:
           script: |
             apk add --no-cache py3-pip  # py3-pip, não só "pip"
 
-            cd Nerdy
+            cd ~/Nerdy
             python3 -m venv venv
             source venv/bin/activate
             pip install -r requirements.txt
             
-            python3 nerdy_web/Aplicacao_WEB/database/init_db.py
+            python3 ~/Nerdy/nerdy_web/Aplicacao_WEB/database/init_db.py
             
       - name: "Iniciar Aplicação e MiniMim"
         uses: appleboy/ssh-action@v1
@@ -51,5 +75,5 @@ jobs:
           source: "."
           script: |
             # Roda em background e mantém mesmo após SSH fechar
-            nohup python3 MiniMim/MiniMim.py > /var/log/minimim.log 2>&1 &
-            nohup python3 nerdy_web/Aplicacao_WEB/main.py > /var/log/nerdy.log 2>&1 &
+            nohup python3 ~/Nerdy/MiniMim/MiniMim.py > /var/log/minimim.log 2>&1 &
+            nohup python3 ~/Nerdy/nerdy_web/Aplicacao_WEB/main.py > /var/log/nerdy.log 2>&1 &
