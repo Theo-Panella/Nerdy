@@ -87,8 +87,7 @@ def login():
     if request.method == "POST":
         usuario = request.form["usuario"]
         senha   = request.form["senha"]
-        ip = request.headers.get('CF-Connecting-IP')
-        
+        ip = request.headers.get('X-Forwarded-For', request.remote_addr).split(',')[0].strip()  # Suporte a proxy
 
         # Checa bloqueio
         bloqueado, restam = verificar_bloqueio(ip)
