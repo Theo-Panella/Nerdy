@@ -22,7 +22,7 @@ jobs:
           source: "."
           target: Nerdy
       
-      - name: "Configuração / Start da Aplicacao"
+      - name: "Configuração"
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.IP_SERVER_NERDY }}
@@ -40,6 +40,15 @@ jobs:
             
             python3 nerdy_web/Aplicacao_WEB/database/init_db.py
             
+      - name: "Iniciar Aplicação e MiniMim"
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.IP_SERVER_NERDY }}
+          username: "root"
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key_format: base64
+          source: "."
+          script: |
             # Roda em background e mantém mesmo após SSH fechar
             nohup python3 MiniMim/MiniMim.py > /var/log/minimim.log 2>&1 &
             nohup python3 nerdy_web/Aplicacao_WEB/main.py > /var/log/nerdy.log 2>&1 &
