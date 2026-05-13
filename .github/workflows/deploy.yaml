@@ -24,6 +24,7 @@ jobs:
       
       - name: "Configuração"
         uses: appleboy/ssh-action@v1
+        timeout-minutes: 5
         with:
           host: ${{ secrets.IP_SERVER_NERDY }}
           username: "root"
