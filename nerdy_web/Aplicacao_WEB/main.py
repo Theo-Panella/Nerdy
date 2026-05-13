@@ -7,7 +7,6 @@ import requests as http_requests
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
-app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)
 app.secret_key = os.environ.get("SECRET_KEY", "nerdy_secret_change_in_production")
 
 # ─── URL da API de analytics (serviço do parceiro) ───────────────────────────
@@ -78,6 +77,9 @@ def enviar_log_para_analytics(payload: dict):
 def index():
     return render_template("home.html")
 
+@app.route('/debug-ip')
+def debug_ip():
+    return dict(request.headers)
 
 # ─── LOGIN ───────────────────────────────────────────────────────────────────
 @app.route("/login", methods=["GET", "POST"])
