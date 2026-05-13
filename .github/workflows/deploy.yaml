@@ -79,6 +79,9 @@ jobs:
           key_format: base64
           source: "."
           script: |
+            # Ativa o ambiente virtual
+            source ~/Nerdy/venv/bin/activate
+
             # Roda em background e mantém mesmo após SSH fechar
             nohup python3 ~/Nerdy/MiniMim/MiniMim.py > /var/log/minimim.log 2>&1 &
             nohup python3 ~/Nerdy/nerdy_web/Aplicacao_WEB/main.py > /var/log/nerdy.log 2>&1 &
