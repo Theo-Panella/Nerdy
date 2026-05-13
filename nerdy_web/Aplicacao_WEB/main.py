@@ -105,7 +105,7 @@ def login():
             session["user_id"]  = user[0]
             session["is_admin"] = bool(user[5])   # coluna is_admin
 
-            registrar_log(usuario, ip, "sucesso")
+            registrar_log(usuario, ip.split(",")[1], "sucesso")
 
             return redirect("/painel" if session["is_admin"] else "/parabens")
 
