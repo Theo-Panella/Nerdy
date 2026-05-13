@@ -1,4 +1,8 @@
 name: "Deploy para VPS"
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
@@ -30,21 +34,22 @@ jobs:
           username: "root"
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           key_format: base64
-          source: "."
           script: |
-            if pgrep -f "python3 MiniMim/MiniMim.py" > /dev/null; then
-                echo "Matando processo antigo do MiniMim..."
-                pkill -f "python3 MiniMim/MiniMim.py"
+            kill_process() {
+            local pattern="$1"
+            local name="$2"
+            local pid
+            pid=$(pgrep -f "$pattern" | grep -v $$)
+            if [ -n "$pid" ]; then
+              echo "Matando processo antigo: $name (PID: $pid)"
+              kill $pid || true
             else
-                echo "Nenhum processo antigo do MiniMim encontrado."
+              echo "Nenhum processo antigo encontrado: $name"
             fi
+            }       
 
-            if pgrep -f "python3 nerdy_web/Aplicacao_WEB/main.py" > /dev/null; then
-                echo "Matando processo antigo da Aplicação WEB..."
-                pkill -f "python3 nerdy_web/Aplicacao_WEB/main.py"
-            else
-                echo "Nenhum processo antigo da Aplicação WEB encontrado."
-            fi
+            kill_process "python3 MiniMim/MiniMim.py" "MiniMim"
+            kill_process "python3 nerdy_web/Aplicacao_WEB/main.py" "Aplicação WEB"
 
       - name: "Configuração"
         uses: appleboy/ssh-action@v1
