@@ -32,7 +32,7 @@ jobs:
           source: "."
           script: |
             apk add --no-cache py3-pip  
-            
+
             cd Nerdy
             python3 -m venv venv
             source venv/bin/activate
@@ -50,5 +50,5 @@ jobs:
           source: "."
           script: |
             # Roda em background e mantém mesmo após SSH fechar
-            nohup python3 MiniMim/MiniMim.py > /tmp/minimim.log 2>&1 &
-            nohup python3 nerdy_web/Aplicacao_WEB/main.py > /tmp/nerdy.log 2>&1 &
+            nohup python3 /home/Nerdy/MiniMim/MiniMim.py > /tmp/minimim.log 2>&1 &
+            nohup python3 /home/Nerdy/nerdy_web/Aplicacao_WEB/main.py > /tmp/nerdy.log 2>&1 &
