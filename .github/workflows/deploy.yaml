@@ -9,8 +9,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Baixa o codigo"
+      - name: "Checkout do codigo"
         uses: actions/checkout@v4
+
+      - name: "Deletando arquivos antigos"
+        uses: appleboy/ssh-action@v1
+        timeout-minutes: 5
+        with:
+          host: ${{ secrets.IP_SERVER_NERDY }}
+          username: "root"
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key_format: base64
+          script: |
+            rm -rf Nerdy
         
       - name: "Copia arquivos via SSH"
         uses: appleboy/scp-action@v1
