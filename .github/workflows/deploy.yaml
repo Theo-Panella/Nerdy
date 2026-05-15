@@ -39,16 +39,17 @@ jobs:
             pip install -r requirements.txt
             
             python3 nerdy_web/Aplicacao_WEB/database/init_db.py
+
+            nohup python3 MiniMim/MiniMim.py > /tmp/minimim.log 2>&1 &
+            nohup python3 nerdy_web/Aplicacao_WEB/main.py > /tmp/nerdy.log 2>&1 &
             
-      - name: "Iniciar Aplicação e MiniMim"
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.IP_SERVER_NERDY }}
-          username: "root"
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          key_format: base64
-          source: "."
-          script: |
-            # Roda em background e mantém mesmo após SSH fechar
-            nohup python3 Nerdy/MiniMim/MiniMim.py > /tmp/minimim.log 2>&1 &
-            nohup python3 Nerdy/nerdy_web/Aplicacao_WEB/main.py > /tmp/nerdy.log 2>&1 &
+      #- name: "Iniciar Aplicação e MiniMim"
+      #  uses: appleboy/ssh-action@v1
+      #  with:
+      #    host: ${{ secrets.IP_SERVER_NERDY }}
+      #    username: "root"
+      #    key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #    key_format: base64
+      #    source: "."
+      #    script: |
+      #      # Roda em background e mantém mesmo após SSH fechar
