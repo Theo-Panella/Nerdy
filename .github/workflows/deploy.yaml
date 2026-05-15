@@ -50,5 +50,5 @@ jobs:
           source: "."
           script: |
             # Roda em background e mantém mesmo após SSH fechar
-            nohup python3 /home/Nerdy/MiniMim/MiniMim.py > /tmp/minimim.log 2>&1 &
-            nohup python3 /home/Nerdy/nerdy_web/Aplicacao_WEB/main.py > /tmp/nerdy.log 2>&1 &
+            nohup python3 Nerdy/MiniMim/MiniMim.py > /tmp/minimim.log 2>&1 &
+            nohup python3 Nerdy/nerdy_web/Aplicacao_WEB/main.py > /tmp/nerdy.log 2>&1 &
