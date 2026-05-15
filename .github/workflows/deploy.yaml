@@ -24,9 +24,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           key_format: base64
           source: "."
-          target: ~/Nerdy
+          target: "/root/Nerdy"  # ← Caminho absoluto
       
-      - name: "Verificando e matando processos antigos"
+      - name: "Matar processos antigos"
         uses: appleboy/ssh-action@v1
         timeout-minutes: 5
         with:
@@ -35,53 +35,52 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           key_format: base64
           script: |
-            kill_process() {
-            local pattern="$1"
-            local name="$2"
-            local pid
-            pid=$(pgrep -f "$pattern" | grep -v $$)
-            if [ -n "$pid" ]; then
-              echo "Matando processo antigo: $name (PID: $pid)"
-              kill $pid || true
-            else
-              echo "Nenhum processo antigo encontrado: $name"
-            fi
-            }       
+            pkill -f "python3.*MiniMim.py" || true
+            pkill -f "python3.*main.py" || true
+            sleep 2
 
-            kill_process "python3 MiniMim/MiniMim.py" "MiniMim"
-            kill_process "python3 nerdy_web/Aplicacao_WEB/main.py" "Aplicação WEB"
-
-      - name: "Configuração"
+      - name: "Setup e Dependências"
         uses: appleboy/ssh-action@v1
-        timeout-minutes: 5
+        timeout-minutes: 10
         with:
           host: ${{ secrets.IP_SERVER_NERDY }}
           username: "root"
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           key_format: base64
-          source: "."
           script: |
-            apk add --no-cache py3-pip  # py3-pip, não só "pip"
-
-            cd ~/Nerdy
+            cd /root/Nerdy
+            
+            # Instalar dependências (ajusta conforme seu SO)
+            apt-get update && apt-get install -y python3-pip python3-venv || \
+            apk add --no-cache python3 py3-pip
+            
+            # Criar venv
             python3 -m venv venv
             source venv/bin/activate
+            pip install --upgrade pip
             pip install -r requirements.txt
             
-            python3 ~/Nerdy/nerdy_web/Aplicacao_WEB/database/init_db.py
-            
-      - name: "Iniciar Aplicação e MiniMim"
+            # Init DB
+            python3 /root/Nerdy/nerdy_web/Aplicacao_WEB/database/init_db.py || {
+              echo "Erro no init_db.py"
+              exit 1
+            }
+      
+      - name: "Iniciar Aplicação"
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.IP_SERVER_NERDY }}
           username: "root"
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           key_format: base64
-          source: "."
           script: |
-            # Ativa o ambiente virtual
-            source ~/Nerdy/venv/bin/activate
-
-            # Roda em background e mantém mesmo após SSH fechar
-            nohup python3 ~/Nerdy/MiniMim/MiniMim.py > /var/log/minimim.log 2>&1 &
-            nohup python3 ~/Nerdy/nerdy_web/Aplicacao_WEB/main.py > /var/log/nerdy.log 2>&1 &
+            cd /root/Nerdy
+            source venv/bin/activate
+            
+            # MiniMim
+            nohup python3 MiniMim/MiniMim.py > /tmp/minimim.log 2>&1 &
+            
+            # Web App
+            nohup python3 nerdy_web/Aplicacao_WEB/main.py > /tmp/nerdy.log 2>&1 &
+            
+            sleep 2
