@@ -21,7 +21,32 @@ jobs:
           key_format: base64
           source: "."
           target: Nerdy
-      
+    
+      - name: "Verificando e matando processos antigos"
+        uses: appleboy/ssh-action@v1
+        timeout-minutes: 5
+        with:
+          host: ${{ secrets.IP_SERVER_NERDY }}
+          username: "root"
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key_format: base64
+          script: |
+            kill_process() {
+            local pattern="$1"
+            local name="$2"
+            local pid
+            pid=$(pgrep -f "$pattern" | grep -v $$)
+            if [ -n "$pid" ]; then
+              echo "Matando processo antigo: $name (PID: $pid)"
+              kill $pid || true
+            else
+              echo "Nenhum processo antigo encontrado: $name"
+            fi
+            }       
+
+            kill_process "python3 MiniMim/MiniMim.py" "MiniMim"
+            kill_process "python3 nerdy_web/Aplicacao_WEB/main.py" "Aplicação WEB"
+
       - name: "Configuração"
         uses: appleboy/ssh-action@v1
         with:
@@ -42,14 +67,3 @@ jobs:
 
             nohup python3 MiniMim/MiniMim.py > /tmp/minimim.log 2>&1 &
             nohup python3 nerdy_web/Aplicacao_WEB/main.py > /tmp/nerdy.log 2>&1 &
-            
-      #- name: "Iniciar Aplicação e MiniMim"
-      #  uses: appleboy/ssh-action@v1
-      #  with:
-      #    host: ${{ secrets.IP_SERVER_NERDY }}
-      #    username: "root"
-      #    key: ${{ secrets.SSH_PRIVATE_KEY }}
-      #    key_format: base64
-      #    source: "."
-      #    script: |
-      #      # Roda em background e mantém mesmo após SSH fechar
