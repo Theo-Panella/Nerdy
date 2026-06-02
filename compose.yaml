@@ -1,7 +1,17 @@
 services:
-  web-minimim:
+  web:
     build: .
     ports:
       - 5000:5000
-    
-    command: nohup python3 nerdy_web/Aplicacao_WEB/main.py > /tmp/nerdy.log 2>&1 & nohup python3 MiniMim/MiniMim.py > /tmp/minimim.log 2>&1 &
+    command: nohup python3 nerdy_web/Aplicacao_WEB/main.py > /tmp/nerdy.log 2>&1 &
+    volumes:
+      - MiniMim:/app/MiniMim
+
+  #minimim:
+  #  build: .
+  #  command: nohup python3 MiniMim/MiniMim.py > /tmp/minimim.log 2>&1 &
+  #  volumes:
+  #    - MiniMim:/app/MiniMim
+
+volumes:
+  MiniMim:
