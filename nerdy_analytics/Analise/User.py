@@ -1,5 +1,5 @@
 import re
-from nerdy_analytics.Analise.contexto import analisar_contexto
+from Analise.contexto import analisar_contexto
 
 def analisa_user(logs):
     regex_failed = re.compile(r"Failed password for .*")

@@ -1,11 +1,11 @@
 import re
 import yaml
-from nerdy_analytics.Analise.IP import analisa_ip
-from nerdy_analytics.Analise.porta import analisa_porta
-from nerdy_analytics.Analise.User import analisa_user
-from nerdy_analytics.Analise.pid import analisa_pid
-from nerdy_analytics.Analise.Servidor import analisa_servidor
-from nerdy_analytics.Analise.contexto import analisar_contexto
+from Analise.IP import analisa_ip
+from Analise.porta import analisa_porta
+from Analise.User import analisa_user
+from Analise.pid import analisa_pid
+from Analise.Servidor import analisa_servidor
+from Analise.contexto import analisar_contexto
 
 # Padrão de Analise
 # Data | Hora | IP de requisicao | IP de Destino | Serviço | Porta | Protocolo | Username | Hostname
@@ -20,7 +20,7 @@ Usuarios = ["root", "admin", "theo", "serginho"]
 servidores = ["server01"]
 
 # Variavel de abertura do arquivo de logs
-log_file = open('logs.txt', 'r')
+log_file = open('nerdy_analytics/logs.txt', 'r')
 
 # Leitura de linha dentro de uma array, cada linha é um index da array
 logs = log_file.readlines() 
@@ -100,5 +100,5 @@ for i, (chave, evento) in enumerate(eventos_agregados.items()):
     data[i] = evento
 
 
-with open("file.yaml", "w") as file:
+with open("nerdy_analytics/file.yaml", "w") as file:
     yaml.dump(data, file)
