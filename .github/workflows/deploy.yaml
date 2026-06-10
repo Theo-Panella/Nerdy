@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           key_format: base64
           script: |
-            rm -rf Nerdy
+            rm -rf Nerdy & apt-get install docker
         
       - name: "Copia arquivos via SSH"
         uses: appleboy/scp-action@v1
@@ -58,6 +58,27 @@ jobs:
             kill_process "python3 MiniMim/MiniMim.py" "MiniMim"
             kill_process "python3 nerdy_web/Aplicacao_WEB/main.py" "Aplicação WEB"
 
+      #- name: "Configuração"
+      #  uses: appleboy/ssh-action@v1
+      #  with:
+      #    host: ${{ secrets.IP_SERVER_NERDY }}
+      #    username: "root"
+      #    key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #    key_format: base64
+      #    source: "."
+      #    script: |
+      #      apk add --no-cache py3-pip  
+#
+      #      cd Nerdy
+      #      python3 -m venv venv
+      #      source venv/bin/activate
+      #      pip install -r requirements.txt
+      #      
+      #      python3 nerdy_web/Aplicacao_WEB/database/init_db.py
+#
+      #      nohup python3 MiniMim/MiniMim.py > /tmp/minimim.log 2>&1 &
+      #      nohup python3 nerdy_web/Aplicacao_WEB/main.py > /tmp/nerdy.log 2>&1 &
+            
       - name: "Configuração"
         uses: appleboy/ssh-action@v1
         with:
@@ -67,15 +88,4 @@ jobs:
           key_format: base64
           source: "."
           script: |
-            apk add --no-cache py3-pip  
-
-            cd Nerdy
-            python3 -m venv venv
-            source venv/bin/activate
-            pip install -r requirements.txt
-            
-            python3 nerdy_web/Aplicacao_WEB/database/init_db.py
-
-            nohup python3 MiniMim/MiniMim.py > /tmp/minimim.log 2>&1 &
-            nohup python3 nerdy_web/Aplicacao_WEB/main.py > /tmp/nerdy.log 2>&1 &
-            
+            docker-compose up
