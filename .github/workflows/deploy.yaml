@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           key_format: base64
           script: |
-            rm -rf Nerdy & sudo apt-get install docker
+            rm -rf Nerdy & sudo apk install docker
         
       - name: "Copia arquivos via SSH"
         uses: appleboy/scp-action@v1
